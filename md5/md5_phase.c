@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../ssl.h"
+#include "../ftssl.h"
 
 static unsigned char g_padding[64] = {
 	0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -18,7 +18,7 @@ static unsigned char g_padding[64] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 };
 
-void	init_md5(t_MD5set *set)
+void	init_md5(t_md5set *set)
 {
 	set->count[0] = 0;
 	set->count[1] = 0;
@@ -28,7 +28,7 @@ void	init_md5(t_MD5set *set)
 	set->st[3] = 0x10325476;
 }
 
-void	update_md5(t_MD5set *set, unsigned char *in, unsigned int len)
+void	update_md5(t_md5set *set, unsigned char *in, unsigned int len)
 {
 	unsigned int index;
 	unsigned int sublen;
@@ -41,7 +41,7 @@ void	update_md5(t_MD5set *set, unsigned char *in, unsigned int len)
 	sublen = 64 - index;
 	if (len >= sublen)
 	{
-		md5_memcpy((t_ptr)&set->buff[index], (t_ptr)in, sublen);
+		ft_memcpy((t_ptr)&set->buff[index], (t_ptr)in, sublen);
 		hash_md5(set->st, set->buff);
 		i = sublen;
 		while (i + 63 < len)
@@ -53,10 +53,10 @@ void	update_md5(t_MD5set *set, unsigned char *in, unsigned int len)
 	}
 	else
 		i = 0;
-	md5_memcpy((t_ptr)&set->buff[index], (t_ptr)&in[i], len - i);
+	ft_memcpy((t_ptr)&set->buff[index], (t_ptr)&in[i], len - i);
 }
 
-void	end_md5(unsigned char digest[16], t_MD5set *set)
+void	end_md5(unsigned char digest[16], t_md5set *set)
 {
 	unsigned char	bits[8];
 	unsigned int	index;
@@ -68,7 +68,7 @@ void	end_md5(unsigned char digest[16], t_MD5set *set)
 	update_md5(set, g_padding, padlen);
 	update_md5(set, bits, 8);
 	c_bits(digest, set->st, 16);
-	md5_memset((t_ptr)set, 0, sizeof(*set));
+	ft_memset((t_ptr)set, 0, sizeof(*set));
 }
 
 void	hash_md5(uint32_t st[4], unsigned char block[64])
@@ -90,5 +90,5 @@ void	hash_md5(uint32_t st[4], unsigned char block[64])
 	st[1] += b;
 	st[2] += c;
 	st[3] += d;
-	md5_memset((unsigned char *)x, 0, sizeof(x));
+	ft_memset((unsigned char *)x, 0, sizeof(x));
 }

@@ -28,3 +28,20 @@ void	*ft_memset(void *b, int c, size_t len)
 	}
 	return (cpy);
 }
+
+void	*ft_memcpy(void *dst, const void *src, size_t n)
+{
+	char	*c_dst;
+	char	*c_src;
+	size_t	i;
+
+	i = 0;
+	c_dst = (char*)dst;
+	c_src = (char*)src;
+	while (i < n)
+	{
+		c_dst[i] = c_src[i];
+		i++;
+	}
+	return (c_dst);
+}

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   md5_dispatch.c                                     :+:      :+:    :+:   */
+/*   sha_dispatch.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdiaz <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/10 16:45:58 by tdiaz             #+#    #+#             */
-/*   Updated: 2018/08/10 16:46:08 by tdiaz            ###   ########.fr       */
+/*   Created: 2018/08/12 19:08:19 by tdiaz             #+#    #+#             */
+/*   Updated: 2018/08/12 19:08:34 by tdiaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,30 +17,30 @@ static int	g_qflag = FALSE;
 static int	g_rflag = FALSE;
 static int	g_pflag = FALSE;
 
-static void	prt_digest(unsigned char digest[16])
+static void	prt_digest(unsigned char digest[32])
 {
 	unsigned int	i;
 
 	i = 0;
-	while (i < 16)
+	while (i < 32)
 	{
 		ft_printf("%02x", digest[i]);
 		i++;
 	}
 }
 
-void		md5string(char *s)
+void		shastring(char *s)
 {
-	t_md5set		set;
-	unsigned char	digest[16];
+	t_shaset		set;
+	unsigned char	digest[32];
 	unsigned int	len;
 
 	len = ft_strlen(s);
-	init_md5(&set);
-	update_md5(&set, (t_ptr)s, len);
-	end_md5(digest, &set);
+	init_sha256(&set);
+	update_sha256(&set, (t_ptr)s, len);
+	end_sha256(digest, &set);
 	if (g_rflag == FALSE && g_qflag == FALSE)
-		ft_printf("MD5 (\"%s\") = ", s);
+		ft_printf("SHA256 (\"%s\") = ", s);
 	prt_digest(digest);
 	if (g_rflag && g_qflag == FALSE)
 		ft_printf(" \"%s\"", s);
@@ -48,50 +48,50 @@ void		md5string(char *s)
 	g_sflag = 0;
 }
 
-void		md5_stdin(void)
+void		sha_stdin(void)
 {
-	t_md5set		set;
-	unsigned char	digest[16];
+	t_shaset		set;
+	unsigned char	digest[32];
 	unsigned int	len;
 	char			buff[READ_SIZE + 1];
 	int				iread;
 
-	init_md5(&set);
+	init_sha256(&set);
 	while (((iread = read(STDIN_FILENO, buff, READ_SIZE))) != 0)
 	{
 		buff[iread] = '\0';
 		if (g_pflag)
 			ft_printf("%s", buff);
-		update_md5(&set, (t_ptr)buff, iread);
+		update_sha256(&set, (t_ptr)buff, iread);
 	}
-	end_md5(digest, &set);
+	end_sha256(digest, &set);
 	prt_digest(digest);
 	ft_printf("\n");
 	g_pflag = 0;
 }
 
-void		md5_file(char *s)
+void		sha_file(char *s)
 {
-	t_md5set		set;
+	t_shaset		set;
 	int				fd;
 	int				iread;
 	char			buff[READ_SIZE + 1];
-	unsigned char	digest[16];
+	unsigned char	digest[32];
 
 	if ((fd = open(s, O_RDONLY)) < 0)
 		ft_printf("Error: %s: can't be open.\n", s);
 	else
 	{
-		init_md5(&set);
+		init_sha256(&set);
 		while (((iread = read(fd, buff, READ_SIZE))) != 0)
 		{
 			buff[iread] = '\0';
-			update_md5(&set, (t_ptr)buff, iread);
+			update_sha256(&set, (t_ptr)buff, iread);
 		}
-		end_md5(digest, &set);
+		end_sha256(digest, &set);
 		close(fd);
 		if (g_rflag == FALSE && g_qflag == FALSE)
-			ft_printf("MD5 (%s) = ", s);
+			ft_printf("SHA256 (%s) = ", s);
 		prt_digest(digest);
 		if (g_rflag && g_qflag == FALSE)
 			ft_printf(" %s", s);
@@ -99,7 +99,7 @@ void		md5_file(char *s)
 	}
 }
 
-void		md5_dispatch(int argc, char **argv)
+void		sha_dispatch(int argc, char **argv)
 {
 	int	i;
 	int input;
@@ -119,11 +119,11 @@ void		md5_dispatch(int argc, char **argv)
 		else
 		{
 			input = FALSE;
-			(g_pflag > 0) ? md5_stdin() : 0;
-			(g_sflag > 0) ? md5string(argv[i++]) : md5_file(argv[i]);
+			(g_pflag > 0) ? sha_stdin() : 0;
+			(g_sflag > 0) ? shastring(argv[i++]) : sha_file(argv[i]);
 		}
 		i++;
 	}
 	if (input == TRUE)
-		md5_stdin();
+		sha_stdin();
 }

@@ -71,6 +71,7 @@ void			ft_putchar(char c);
 void			ft_putendl(char const *s);
 void			ft_putstr(char const *s);
 void			*ft_memset(void *b, int c, size_t len);
+void			*ft_memcpy(void *dst, const void *src, size_t n);
 int				ft_atoi(const char *str);
 
 void			freeflags(t_flags **flags_set);

@@ -10,31 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../ssl.h"
-
-void	md5_memcpy(unsigned char *out, unsigned char *in, unsigned int len)
-{
-	unsigned int	i;
-
-	i = 0;
-	while (i < len)
-	{
-		out[i] = in[i];
-		i++;
-	}
-}
-
-void	md5_memset(unsigned char *output, int c, unsigned int len)
-{
-	unsigned int	i;
-
-	i = 0;
-	while (i < len)
-	{
-		((char *)output)[i] = (char)c;
-		i++;
-	}
-}
+#include "../ftssl.h"
 
 void	c_bits(unsigned char *output, uint32_t *input, unsigned int len)
 {
@@ -67,6 +43,42 @@ void	uc_bits(uint32_t *output, unsigned char *input, unsigned int len)
 			| (((uint32_t)input[j + 1]) << 8)
 			| (((uint32_t)input[j + 2]) << 16)
 			| (((uint32_t)input[j + 3]) << 24);
+		i++;
+		j += 4;
+	}
+}
+
+void	beuc_bits(uint32_t *output, unsigned char *input, unsigned int len)
+{
+	unsigned int	i;
+	unsigned int	j;
+
+	i = 0;
+	j = 0;
+	while (j < len)
+	{
+		output[i] = (uint32_t)input[j] << 24
+			| (((uint32_t)input[j + 1]) << 16)
+			| (((uint32_t)input[j + 2]) << 8)
+			| ((uint32_t)input[j + 3]);
+		i++;
+		j += 4;
+	}
+}
+
+void	bec_bits(unsigned char *output, uint32_t *input, unsigned int len)
+{
+	unsigned int	i;
+	unsigned int	j;
+
+	i = 0;
+	j = 0;
+	while (j < len)
+	{
+		output[j] = (unsigned char)((input[i] >> 24) & 0xff);
+		output[j + 1] = (unsigned char)((input[i] >> 16) & 0xff);
+		output[j + 2] = (unsigned char)((input[i] >> 8) & 0xff);
+		output[j + 3] = (unsigned char)(input[i] & 0xff);
 		i++;
 		j += 4;
 	}
