@@ -31,7 +31,7 @@ static void	prt_digest(unsigned char digest[32])
 
 void		shastring(char *s)
 {
-	t_shaset		set;
+	t_sha2set		set;
 	unsigned char	digest[32];
 	unsigned int	len;
 
@@ -50,19 +50,24 @@ void		shastring(char *s)
 
 void		sha_stdin(void)
 {
-	t_shaset		set;
+	t_sha2set		set;
 	unsigned char	digest[32];
 	unsigned int	len;
 	char			buff[READ_SIZE + 1];
 	int				iread;
 
 	init_sha256(&set);
-	while (((iread = read(STDIN_FILENO, buff, READ_SIZE))) != 0)
+	while (((iread = read(STDIN_FILENO, buff, READ_SIZE))) > 0)
 	{
 		buff[iread] = '\0';
 		if (g_pflag)
 			ft_printf("%s", buff);
 		update_sha256(&set, (t_ptr)buff, iread);
+	}
+	if (iread < 0)
+	{
+		ft_printf("sha256: Error during READ command.\n");
+		return ;
 	}
 	end_sha256(digest, &set);
 	prt_digest(digest);
@@ -72,22 +77,19 @@ void		sha_stdin(void)
 
 void		sha_file(char *s)
 {
-	t_shaset		set;
+	t_sha2set		set;
 	int				fd;
 	int				iread;
 	char			buff[READ_SIZE + 1];
 	unsigned char	digest[32];
 
 	if ((fd = open(s, O_RDONLY)) < 0)
-		ft_printf("Error: %s: can't be open.\n", s);
+		ft_printf("sha256: Error: %s: can't be open.\n", s);
 	else
 	{
 		init_sha256(&set);
-		while (((iread = read(fd, buff, READ_SIZE))) != 0)
-		{
-			buff[iread] = '\0';
-			update_sha256(&set, (t_ptr)buff, iread);
-		}
+		if (readflsha256(fd, buff, &set) < 0)
+			return ;
 		end_sha256(digest, &set);
 		close(fd);
 		if (g_rflag == FALSE && g_qflag == FALSE)

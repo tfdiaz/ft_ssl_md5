@@ -32,7 +32,7 @@ uint32_t	g_cuberoot[64] = {
 	0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
 };
 
-void	init_sha256(t_shaset *set)
+void	init_sha256(t_sha2set *set)
 {
 	set->count[0] = 0;
 	set->count[1] = 0;
@@ -46,7 +46,7 @@ void	init_sha256(t_shaset *set)
 	set->st[7] = 0x5be0cd19;
 }
 
-void	update_sha256(t_shaset *set, unsigned char *in, unsigned int len)
+void	update_sha256(t_sha2set *set, unsigned char *in, unsigned int len)
 {
 	unsigned int	index;
 	unsigned int	sublen;
@@ -119,7 +119,7 @@ void	hash_sha256(uint32_t st[8], unsigned char block[64])
 	ft_memset((unsigned char *)buff, 0, sizeof(buff));
 }
 
-void	end_sha256(unsigned char digest[32], t_shaset *set)
+void	end_sha256(unsigned char digest[32], t_sha2set *set)
 {
 	unsigned char	bits[8];
 	unsigned int	index;

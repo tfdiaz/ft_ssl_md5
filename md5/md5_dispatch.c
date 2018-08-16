@@ -57,12 +57,17 @@ void		md5_stdin(void)
 	int				iread;
 
 	init_md5(&set);
-	while (((iread = read(STDIN_FILENO, buff, READ_SIZE))) != 0)
+	while (((iread = read(STDIN_FILENO, buff, READ_SIZE))) > 0)
 	{
 		buff[iread] = '\0';
 		if (g_pflag)
 			ft_printf("%s", buff);
 		update_md5(&set, (t_ptr)buff, iread);
+	}
+	if (iread < 0)
+	{
+		ft_printf("md5: Error during READ command.\n");
+		return ;
 	}
 	end_md5(digest, &set);
 	prt_digest(digest);
@@ -79,15 +84,12 @@ void		md5_file(char *s)
 	unsigned char	digest[16];
 
 	if ((fd = open(s, O_RDONLY)) < 0)
-		ft_printf("Error: %s: can't be open.\n", s);
+		ft_printf("md5: Error: %s: can't be open.\n", s);
 	else
 	{
 		init_md5(&set);
-		while (((iread = read(fd, buff, READ_SIZE))) != 0)
-		{
-			buff[iread] = '\0';
-			update_md5(&set, (t_ptr)buff, iread);
-		}
+		if (readflmd5(fd, buff, &set) < 0)
+			return ;
 		end_md5(digest, &set);
 		close(fd);
 		if (g_rflag == FALSE && g_qflag == FALSE)

@@ -30,12 +30,12 @@ typedef	struct	s_md5set
 	unsigned char	buff[64];
 }				t_md5set;
 
-typedef struct	s_shaset
+typedef struct	s_sha2set
 {
 	uint32_t		st[8];
 	uint32_t		count[2];
 	unsigned char	buff[64];
-}				t_shaset;
+}				t_sha2set;
 
 typedef union	u_state
 {
@@ -88,10 +88,10 @@ uint32_t		rightshft(uint32_t x, int n);
 uint32_t		rotright(uint32_t x, int n);
 uint32_t		wordcalc(uint32_t x[16], int i);
 
-void			init_sha256(t_shaset *set);
-void			update_sha256(t_shaset *set, unsigned char *in,
+void			init_sha256(t_sha2set *set);
+void			update_sha256(t_sha2set *set, unsigned char *in,
 				unsigned int len);
-void			end_sha256(unsigned char digest[32], t_shaset *set);
+void			end_sha256(unsigned char digest[32], t_sha2set *set);
 void			hash_sha256(uint32_t st[8], unsigned char block[64]);
 
 void			init_sha3(t_sha3set *set);
@@ -103,5 +103,9 @@ void			theta(uint64_t *state[25]);
 void			rhopi(uint64_t *state[25]);
 void			chi(uint64_t *state[25]);
 void			iota(uint64_t *state[25], int r);
+
+int				readflmd5(int fd, char *buff, t_md5set *set);
+int				readflsha3(int fd, char *buff, t_sha3set *set);
+int				readflsha256(int fd, char *buff, t_sha2set *set);
 
 #endif
