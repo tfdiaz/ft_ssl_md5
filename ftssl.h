@@ -37,6 +37,17 @@ typedef struct	s_shaset
 	unsigned char	buff[64];
 }				t_shaset;
 
+typedef struct	s_sha3set
+{
+	union {
+		uint8_t			bus[8];
+		uint64_t		lane[25];
+	} state;
+	int				pt;
+	int				rsiz;
+	int				digestlen;
+}				t_sha3set;
+
 uint32_t		prm_f(uint32_t x, uint32_t y, uint32_t z);
 uint32_t		prm_g(uint32_t x, uint32_t y, uint32_t z);
 uint32_t		prm_h(uint32_t x, uint32_t y, uint32_t z);
@@ -61,6 +72,7 @@ void			round34(uint32_t *st[4], uint32_t x[64]);
 
 void			md5_dispatch(int argc, char **argv);
 void			sha_dispatch(int argc, char **argv);
+void			sha3_dispatch(int argc, char **argv);
 int				comp(const char *s1, const char *s2);
 
 uint32_t		ch(uint32_t x, uint32_t y, uint32_t z);
@@ -78,5 +90,9 @@ void			update_sha256(t_shaset *set, unsigned char *in,
 				unsigned int len);
 void			end_sha256(unsigned char digest[32], t_shaset *set);
 void			hash_sha256(uint32_t st[8], unsigned char block[64]);
+
+void			init_sha3(t_sha3set *set);
+void			update_sha3(t_sha3set *set, unsigned char *in, unsigned int len);
+void			end_sha3(unsigned char digest[16], t_sha3set *set);
 
 #endif

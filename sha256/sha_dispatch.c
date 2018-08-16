@@ -120,7 +120,7 @@ void		sha_dispatch(int argc, char **argv)
 		{
 			input = FALSE;
 			(g_pflag > 0) ? sha_stdin() : 0;
-			(g_sflag > 0) ? shastring(argv[i++]) : sha_file(argv[i]);
+			(g_sflag > 0) ? shastring(argv[i]) : sha_file(argv[i]);
 		}
 		i++;
 	}

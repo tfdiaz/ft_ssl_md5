@@ -6,7 +6,7 @@
 /*   By: tdiaz <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/02 10:55:49 by tdiaz             #+#    #+#             */
-/*   Updated: 2018/08/02 11:09:59 by tdiaz            ###   ########.fr       */
+/*   Updated: 2018/08/13 22:30:34 by tdiaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ int			main(int argc, char **argv)
 			md5_dispatch(argc, argv);
 		else if (comp(argv[1], "sha256"))
 			sha_dispatch(argc, argv);
+		else if (comp(argv[1], "sha3"))
+			sha3_dispatch(argc, argv);
 		else
 			ft_printf("Unknown command: %s\n", argv[1]);
 	}
