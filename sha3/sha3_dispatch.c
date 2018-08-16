@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ftssl.h"
+#include "../ftssl.h"
 
 static int	g_sflag = FALSE;
 static int	g_qflag = FALSE;
@@ -108,13 +108,13 @@ void		sha3_dispatch(int argc, char **argv)
 	input = TRUE;
 	while (i < argc)
 	{
-		if (comp(argv[i], "-q") && i < 6)
+		if (strcomp(argv[i], "-q") && i < 6)
 			g_qflag = TRUE;
-		else if (comp(argv[i], "-r") && i < 6)
+		else if (strcomp(argv[i], "-r") && i < 6)
 			g_rflag = TRUE;
-		else if (comp(argv[i], "-s") && i < 6)
+		else if (strcomp(argv[i], "-s") && i < 6)
 			g_sflag = TRUE;
-		else if (comp(argv[i], "-p") && i < 6)
+		else if (strcomp(argv[i], "-p") && i < 6)
 			g_pflag = TRUE;
 		else
 		{

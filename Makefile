@@ -16,9 +16,10 @@ CC = @gcc
 
 FLAGS = -Wall -Wextra -Werror -o $(NAME)
 
-SRC = main.c md5/md5_rounds.c md5/md5_prmtvs.c md5/md5_bitset.c md5/md5_phase.c \
-		md5/md5_dispatch.c sha256/sha256.c sha256/sha_dispatch.c \
-		sha256/sha_prmtvs.c sha256/sha_sigma.c sha3_dispatch.c sha3.c
+SRC = main.c md5/md5_rounds.c md5/md5_prmtvs.c md5/md5_bitset.c \
+	md5/md5_phase.c md5/md5_dispatch.c sha256/sha256.c sha256/sha_dispatch.c \
+	sha256/sha_prmtvs.c sha256/sha_sigma.c sha3/sha3_dispatch.c sha3/sha3.c \
+	sha3/keccak.c
 
 OBJ = $(SRC:.c=.o)
 

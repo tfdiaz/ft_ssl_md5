@@ -130,4 +130,6 @@ wchar_t			*ft_wstrcat(wchar_t *ws1, wchar_t *ws2);
 wchar_t			*ft_wstrnew(size_t size);
 wchar_t			*ft_wstrdup(wchar_t *ws1);
 
+int				strcomp(const char *s1, const char *s2);
+
 #endif

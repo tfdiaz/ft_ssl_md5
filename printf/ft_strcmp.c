@@ -1,32 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   md5.c                                              :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdiaz <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/02 10:55:49 by tdiaz             #+#    #+#             */
-/*   Updated: 2018/08/13 22:30:34 by tdiaz            ###   ########.fr       */
+/*   Created: 2018/08/16 10:02:53 by tdiaz             #+#    #+#             */
+/*   Updated: 2018/08/16 10:02:58 by tdiaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ftssl.h"
+#include "ft_printf.h"
 
-int			main(int argc, char **argv)
+int	strcomp(const char *s1, const char *s2)
 {
-	int		i;
-
-	i = 1;
-	if (argc > 1)
+	while (*s1 == *s2)
 	{
-		if (strcomp(argv[1], "md5"))
-			md5_dispatch(argc, argv);
-		else if (strcomp(argv[1], "sha256"))
-			sha_dispatch(argc, argv);
-		else if (strcomp(argv[1], "sha3"))
-			sha3_dispatch(argc, argv);
-		else
-			ft_printf("Unknown command: %s\n", argv[1]);
+		if (!*s1)
+			return (1);
+		s1++;
+		s2++;
 	}
 	return (0);
 }

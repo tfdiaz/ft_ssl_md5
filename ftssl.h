@@ -37,15 +37,18 @@ typedef struct	s_shaset
 	unsigned char	buff[64];
 }				t_shaset;
 
+typedef union	u_state
+{
+	uint8_t		byte[8];
+	uint64_t	lane[25];
+}				t_state;
+
 typedef struct	s_sha3set
 {
-	union {
-		uint8_t			bus[8];
-		uint64_t		lane[25];
-	} state;
-	int				pt;
-	int				rsiz;
-	int				digestlen;
+	int		index;
+	int		rate;
+	int		digestlen;
+	t_state	state;
 }				t_sha3set;
 
 uint32_t		prm_f(uint32_t x, uint32_t y, uint32_t z);
@@ -92,7 +95,13 @@ void			end_sha256(unsigned char digest[32], t_shaset *set);
 void			hash_sha256(uint32_t st[8], unsigned char block[64]);
 
 void			init_sha3(t_sha3set *set);
-void			update_sha3(t_sha3set *set, unsigned char *in, unsigned int len);
+void			update_sha3(t_sha3set *set, unsigned char *in,
+				unsigned int len);
 void			end_sha3(unsigned char digest[16], t_sha3set *set);
+
+void			theta(uint64_t *state[25]);
+void			rhopi(uint64_t *state[25]);
+void			chi(uint64_t *state[25]);
+void			iota(uint64_t *state[25], int r);
 
 #endif
