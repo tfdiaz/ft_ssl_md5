@@ -51,6 +51,12 @@ typedef struct	s_sha3set
 	t_state	state;
 }				t_sha3set;
 
+typedef struct	s_send
+{
+	void	(*prt)(int argc, char **argv);
+	char	*s;
+}				t_send;
+
 uint32_t		prm_f(uint32_t x, uint32_t y, uint32_t z);
 uint32_t		prm_g(uint32_t x, uint32_t y, uint32_t z);
 uint32_t		prm_h(uint32_t x, uint32_t y, uint32_t z);

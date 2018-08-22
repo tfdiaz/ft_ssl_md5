@@ -12,6 +12,13 @@
 
 #include "ftssl.h"
 
+t_send	g_send[4] = {
+	{.prt = &md5_dispatch, .s = "md5"},
+	{.prt = &sha_dispatch, .s = "sha256"},
+	{.prt = &sha3_dispatch, .s = "sha3"},
+	{0, 0}
+};
+
 int			readflmd5(int fd, char *buff, t_md5set *set)
 {
 	int iread;
@@ -58,17 +65,19 @@ int			main(int argc, char **argv)
 {
 	int		i;
 
-	i = 1;
 	if (argc > 1)
 	{
-		if (strcomp(argv[1], "md5"))
-			md5_dispatch(argc, argv);
-		else if (strcomp(argv[1], "sha256"))
-			sha_dispatch(argc, argv);
-		else if (strcomp(argv[1], "sha3"))
-			sha3_dispatch(argc, argv);
-		else
-			ft_printf("Unknown command: %s\n", argv[1]);
+		i = 0;
+		while (g_send[i].prt != NULL)
+		{
+			if (strcomp(argv[1], g_send[i].s))
+			{
+				g_send[i].prt(argc, argv);
+				exit(0);
+			}
+			i++;
+		}
+		ft_printf("Unknown command: %s\n", argv[1]);
 	}
 	return (0);
 }
